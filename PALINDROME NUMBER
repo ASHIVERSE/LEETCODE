@@ -1,0 +1,22 @@
+bool isPalindrome(int x) {
+    if (x < 0) return false; // Negative numbers are not palindromes
+
+    int original = x;  // Save the original number
+    int reversed = 0;  // Initialize reversed number to 0
+
+    // Reverse the number digit by digit
+    while (x > 0) {
+        int digit = x % 10; // Extract the last digit
+        
+        // Check for overflow before updating `reversed`
+        if (reversed > (INT_MAX - digit) / 10) {
+            return false; // Overflow would occur, so it's not a palindrome
+        }
+
+        reversed = reversed * 10 + digit; // Add it to the reversed number
+        x /= 10; // Remove the last digit
+    }
+
+    // Compare the reversed number with the original
+    return original == reversed;
+}
