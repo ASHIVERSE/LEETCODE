@@ -1,6 +1,6 @@
 class Solution {
     Integer[][] dp; // Memoization table
-    int N; //make N
+    int N; //make N as
 
     public int countArrangement(int n) {
         N = n;
