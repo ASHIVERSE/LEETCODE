@@ -15,38 +15,26 @@
  */
 class Solution {
     public boolean isBalanced(TreeNode root) {
-         if (root == null) {
-            return true;
-        }
-
-        // Calculate the height of left and right subtrees
-        int leftHeight = getHeight(root.left);
-        int rightHeight = getHeight(root.right);
-
-        // Check if the absolute difference in heights of left and right subtrees is <= 1
-        if (Math.abs(leftHeight - rightHeight) <= 1 &&
-            isBalanced(root.left) &&  // Recursively check the left subtree
-            isBalanced(root.right)) { // Recursively check the right subtree
-            return true;
-        }
-
-        // If any condition fails, the tree is unbalanced
-        return false;
+        return getHeight(root) !=-1;
     }
 
-    // Function to calculate the height of a subtree
+   
     public int getHeight(TreeNode root) {
-        // Base case: if the current node is NULL, return 0 (height of an empty tree)
-        if (root == null) {
-            return 0;
-        }
+      if(root== null)
+        return 0;
+      
+      int leftH=getHeight(root.left);
+      if(leftH ==-1)
+        return -1;
 
-        // Recursively calculate the height of left and right subtrees
-        int leftHeight = getHeight(root.left);
-        int rightHeight = getHeight(root.right);
+     int rightH=getHeight(root.right);
+     if(rightH==-1)
+        return -1;
 
-        // Return the maximum height of left and right subtrees plus 1 (for the current node)
-        return Math.max(leftHeight, rightHeight) + 1;
+        if(Math.abs(leftH-rightH)>1)
+           return -1;
+        return Math.max(leftH,rightH)+1;
+      
     }
 }
 
