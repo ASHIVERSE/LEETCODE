@@ -14,39 +14,22 @@
  * }
  */
 class Solution {
-    public List<List<Integer>> levelOrder(TreeNode root) {
-       List<List<Integer>> ans=new ArrayList<>();
+   public void rightDFS(TreeNode node, int level, List<Integer> res) {
+        if (node == null) return;
 
-        if(root==null) return ans;
+        if (res.size() == level)
+            res.add(node.val);
 
-        Queue<TreeNode> q=new LinkedList<>();
+        // Recurse right
+        rightDFS(node.right, level + 1, res);
 
-        q.offer(root);
-
-        while(!q.isEmpty())
-        {
-            List<Integer> level=new ArrayList<>();
-            int size = q.size();
-            for(int i = 0 ; i<size; i++)
-            {
-                TreeNode curr=q.poll();
-                level.add(curr.val);
-                if(curr.left!=null)  q.offer(curr.left);
-                 if(curr.right!=null)  q.offer(curr.right);
-
-             }
-             ans.add(level);
-        }
-        return ans;
+        // Recurse left
+        rightDFS(node.left, level + 1, res);
     }
-    public List<Integer> rightSideView(TreeNode root) 
-    {
-        List<List<Integer>> levels=levelOrder(root);
-        List<Integer> right=new ArrayList<>();
-        for(List<Integer> level: levels)
-        {
-            right.add(level.get(level.size()-1));
-        }
-        return right;
+    public List<Integer> rightSideView(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        rightDFS(root, 0, res);
+        return res;
     }
+    
 }
