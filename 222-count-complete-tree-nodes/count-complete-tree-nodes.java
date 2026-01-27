@@ -15,19 +15,37 @@
  */
 class Solution {
     public int countNodes(TreeNode root) {
-        if(root==null)
+         // If tree is empty, return 0
+        if (root == null) {
             return 0;
-        int[] count=new int[1];
-        inorder(root,count);
-        return count[0];
+        }
+        // Get left height
+        int lh = findHeightLeft(root);
+        // Get right height
+        int rh = findHeightRight(root);
+        // If heights match, use perfect binary tree formula
+        if (lh == rh) {
+            return (1 << lh) - 1;
+        }
+        // Otherwise, recursively count left and right subtrees
+        return 1 + countNodes(root.left) + countNodes(root.right);
     }
-    public void inorder(TreeNode root, int[] count)
-    {
-        if(root==null)
-            return ;
-        count[0]++;
-        inorder(root.left,count);
-        inorder(root.right,count);
+    public int findHeightLeft(TreeNode node) {
+        int height = 0;
+        while (node != null) {
+            height++;
+            node = node.left;
+        }
+        return height;
+    }
 
+    // Helper to find height from rightmost path
+    public int findHeightRight(TreeNode node) {
+        int height = 0;
+        while (node != null) {
+            height++;
+            node = node.right;
+        }
+        return height;
     }
 }
