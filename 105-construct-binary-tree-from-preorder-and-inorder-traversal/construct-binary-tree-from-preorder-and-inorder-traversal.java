@@ -15,14 +15,14 @@
  */
 class Solution {
     public TreeNode buildTree(int[] preorder, int[] inorder) {
-         Map<Integer, Integer> inMap = new HashMap<>();
+        Map<Integer, Integer> inMap = new HashMap<>();
         for (int i = 0; i < inorder.length; i++) {
             inMap.put(inorder[i], i);
         }
 
         // Start the recursive construction
         return build(preorder, 0, preorder.length - 1, inorder, 0, inorder.length - 1, inMap);
-    }
+    } 
      private TreeNode build(int[] preorder, int preStart, int preEnd,
                            int[] inorder, int inStart, int inEnd, Map<Integer, Integer> inMap) {
         // Base condition
