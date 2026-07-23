@@ -7,5 +7,14 @@ class Solution {
 
         int bits = 32 - Integer.numberOfLeadingZeros(n);
         return 1 << bits;
+//         int bits = 0;
+// int x = n;
+
+// while (x > 0) {
+//     bits++;
+//     x /= 2;      // or x >>= 1;
+// }
+
+// return 1 << bits;
     }
 }
