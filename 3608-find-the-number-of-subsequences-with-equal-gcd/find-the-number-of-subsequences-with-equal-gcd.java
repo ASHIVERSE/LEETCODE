@@ -1,49 +1,53 @@
 class Solution {
-
-    int MOD = 1_000_000_007;
-    int[][][] dp;
-    int[] nums;
-    int n;
+    static final int MOD = 1000000007;
 
     public int subsequencePairCount(int[] nums) {
 
-        this.nums = nums;
-        n = nums.length;
+        long[][] dp = new long[201][201];
+        dp[0][0] = 1;
 
-        dp = new int[n][201][201];
+        for (int x : nums) {
 
-        for (int i = 0; i < n; i++)
-            for (int j = 0; j <= 200; j++)
-                Arrays.fill(dp[i][j], -1);
+            long[][] ndp = new long[201][201];
 
-        return solve(0, 0, 0);
-    }
+            for (int a = 0; a <= 200; a++) {
+                for (int b = 0; b <= 200; b++) {
 
-    int solve(int idx, int g1, int g2) {
+                    if (dp[a][b] == 0) continue;
 
-        if (idx == n) {
-            return (g1 != 0 && g1 == g2) ? 1 : 0;
+                    // Don't take x
+                    ndp[a][b] += dp[a][b];
+
+                    // Take x in first subsequence
+                    ndp[gcd(a, x)][b] += dp[a][b];
+
+                    // Take x in second subsequence
+                    ndp[a][gcd(b, x)] += dp[a][b];
+
+                    ndp[a][b] %= MOD;
+                    ndp[gcd(a, x)][b] %= MOD;
+                    ndp[a][gcd(b, x)] %= MOD;
+                }
+            }
+
+            dp = ndp;
         }
-
-        if (dp[idx][g1][g2] != -1)
-            return dp[idx][g1][g2];
 
         long ans = 0;
 
-        // Skip current element
-        ans += solve(idx + 1, g1, g2);
+        for (int g = 1; g <= 200; g++) {
+            ans = (ans + dp[g][g]) % MOD;
+        }
 
-        // Put in seq1
-        ans += solve(idx + 1, gcd(g1, nums[idx]), g2);
-
-        // Put in seq2
-        ans += solve(idx + 1, g1, gcd(g2, nums[idx]));
-
-        return dp[idx][g1][g2] = (int) (ans % MOD);
+        return (int) ans;
     }
 
     int gcd(int a, int b) {
-        if (a == 0) return b;
-        return gcd(b % a, a);
+        while (b != 0) {
+            int temp = a % b;
+            a = b;
+            b = temp;
+        }
+        return a;
     }
 }
