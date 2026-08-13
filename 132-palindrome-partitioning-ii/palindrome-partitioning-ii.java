@@ -1,9 +1,9 @@
 class Solution {
-     boolean isPalindrome(String s, int i, int j) {
 
-        while(i < j) {
+    boolean isPalindrome(String s, int i, int j) {
 
-            if(s.charAt(i) != s.charAt(j))
+        while (i < j) {
+            if (s.charAt(i) != s.charAt(j))
                 return false;
 
             i++;
@@ -12,34 +12,38 @@ class Solution {
 
         return true;
     }
-    public int minCut(String s) {
-         int n = s.length();
 
-        // dp[i] = minimum partitions needed from i to end
-        int[] dp = new int[n + 1];
+    int solve(String s, int i, int[] dp) {
 
-        dp[n] = 0; // base case
+        // If we reached the end, no more cuts needed
+        if (i == s.length())
+            return 0;
 
-        // Fill from back
-        for(int i = n - 1; i >= 0; i--) {
+        if (dp[i] != -1)
+            return dp[i];
 
-            int minCost = Integer.MAX_VALUE;
+        int ans = Integer.MAX_VALUE;
 
-            for(int j = i; j < n; j++) {
+        // Try every possible partition
+        for (int j = i; j < s.length(); j++) {
 
-                // If current substring is palindrome
-                if(isPalindrome(s, i, j)) {
+            if (isPalindrome(s, i, j)) {
 
-                    int cost = 1 + dp[j + 1];
+                int cuts = 1 + solve(s, j + 1, dp);
 
-                    minCost = Math.min(minCost, cost);
-                }
+                ans = Math.min(ans, cuts);
             }
-
-            dp[i] = minCost;
         }
 
-        // Partitions - 1 = Cuts
-        return dp[0] - 1;
+        return dp[i] = ans;
+    }
+
+    public int minCut(String s) {
+
+        int[] dp = new int[s.length()];
+
+        Arrays.fill(dp, -1);
+
+        return solve(s, 0, dp) - 1;
     }
 }
